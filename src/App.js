@@ -3,6 +3,47 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+const BlogCreationForm = ({handleBlogSubmit, handleTitleChange, handleAuthorChange, handleUrlChange, title, author, url}) => {
+  return (
+    <form onSubmit={handleBlogSubmit} >
+      <div>
+        Title <input type={'text'} value={title} onChange={handleTitleChange} />
+      </div>
+      <div>
+        Author <input type={'text'} value={author} onChange={handleAuthorChange} />
+      </div>
+      <div>
+        URL <input type={'text'} value={url} onChange={handleUrlChange} />
+      </div>
+      <div>
+        <button type='submit'>Create</button>
+      </div>
+    </form>
+  )
+}
+
+const LoginForm = ({handleLoginSubmit, handleUsernameChange, handlePasswordChange, username, password}) => {
+  return (
+    <form onSubmit={handleLoginSubmit} >
+      <div>
+        Username <input type={'text'} value={username} onChange={handleUsernameChange} />
+      </div>
+      <div>
+        Password <input type={'password'} value={password} onChange={handlePasswordChange} />
+      </div>
+      <div>
+        <button type='submit'>Login</button>
+      </div>
+    </form>
+  )
+}
+
+const NotificationBar = ({ message, type }) => {
+  return (
+    <h3 className={type}>{message}</h3>
+  )
+}
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -11,6 +52,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, setNotification] = useState('')
+  const [notificationType, setNotificationType] = useState('')
 
   useEffect( () => {
     async function getData() {
@@ -28,6 +71,13 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const flashNotification = (message, type) => {
+    setNotification(message)
+    setNotificationType(type)
+    setTimeout(() => { setNotification('') }, 5000)
+    setTimeout(() => { setNotificationType('') }, 5000)
+  }
 
   const handleLogout = () => {
     console.log('Logging out')
@@ -47,6 +97,7 @@ const App = () => {
       setPassword('')
     } catch(error) {
       console.log('Got error', error)
+      flashNotification('Invalid username or password','Error')
     }
   }
 
@@ -64,52 +115,53 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      flashNotification('Blog creation successful', 'Info')
     } catch(error) {
       console.log('Got error', error)
+      flashNotification('Blog creation failed', 'Error')
     }
   }
+
+  const handleUsernameChange = ({ target }) => { setUsername(target.value) }
+  const handlePasswordChange = ({ target }) => { setPassword(target.value) }
+  const handleTitleChange = ({ target }) => { setTitle(target.value) }
+  const handleAuthorChange = ({ target }) => { setAuthor(target.value) }
+  const handleUrlChange = ({ target }) => { setUrl(target.value) }
 
   if(user === null) {
     return (
       <div>
         <h2>Log in to the application</h2>
-        <form onSubmit={handleLoginSubmit} >
-          <div>
-            Username <input type={'text'} value={username} onChange={({ target }) => { setUsername(target.value) }} />
-          </div>
-          <div>
-            Password <input type={'password'} value={password} onChange={({ target }) => { setPassword(target.value) }} />
-          </div>
-          <div>
-            <button type='submit'>Login</button>
-          </div>
-        </form>
+        <NotificationBar message={notification} type={notificationType} />
+        <LoginForm
+          handleLoginSubmit={handleLoginSubmit}
+          handleUsernameChange={handleUsernameChange}
+          handlePasswordChange={handlePasswordChange}
+          username={username}
+          password={password}
+        />
       </div>
     )
   }
   return (
     <div>
       <h2>Blogs</h2>
+      <NotificationBar message={notification} type={notificationType} />
       <div>
         {user.name} is logged in
         <button onClick={handleLogout} >Log out</button>
       </div>
       <h2>Create new</h2>
       <div>
-        <form onSubmit={handleBlogSubmit} >
-          <div>
-            Title <input type={'text'} value={title} onChange={({ target }) => { setTitle(target.value) }} />
-          </div>
-          <div>
-            Author <input type={'text'} value={author} onChange={({ target }) => { setAuthor(target.value) }} />
-          </div>
-          <div>
-            URL <input type={'text'} value={url} onChange={({ target }) => { setUrl(target.value) }} />
-          </div>
-          <div>
-            <button type='submit'>Create</button>
-          </div>
-        </form>
+        <BlogCreationForm 
+          handleBlogSubmit={handleBlogSubmit}
+          handleTitleChange={handleTitleChange}
+          handleAuthorChange={handleAuthorChange}
+          handleUrlChange={handleUrlChange}
+          title={title}
+          author={author}
+          url={url}
+        />
       </div>
       <div>
         {blogs.map(blog => <Blog key={blog.id} blog={blog} /> )}
