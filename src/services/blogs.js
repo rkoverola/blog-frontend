@@ -23,11 +23,21 @@ const create = async (blog) => {
 }
 
 // FIXME: No authorization yet
+// NOTE: Authorization not needed for leaving likes
 const update = async (blog, id) => {
   const url = `${baseUrl}/${id}`
   const response = await axios.put(url, blog)
   return response.data
 }
 
-const blogService = { getAll, create, update, setToken }
+const remove = async (id) => {
+  const config = { 
+    headers: { Authorization: `bearer ${token}` } 
+  }
+  const url = `${baseUrl}/${id}`
+  const response = await axios.delete(url, config)
+  return response.data
+}
+
+const blogService = { getAll, create, update, remove, setToken }
 export default blogService

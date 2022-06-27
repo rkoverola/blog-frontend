@@ -66,6 +66,8 @@ const App = () => {
   const addBlog = (blogObject) => {
     blogService.create(blogObject)
     .then((addedBlog) => {
+      console.log('Adding', addedBlog)
+      console.log('To', blogs)
       sortByLikesAndSet(blogs.concat(addedBlog))
       blogCreationFormRef.current.toggleVisibility()
       flashNotification('Blog creation successful', 'Info')
@@ -74,6 +76,21 @@ const App = () => {
       console.log('Got error', error)
       flashNotification('Blog creation failed', 'Error')
     })
+  }
+
+  const removeBlog = (blog) => {
+    const confirm = window.confirm(`Remove blog "${blog.title}"?`)
+    if(confirm) {
+      blogService.remove(blog.id)
+      .then(() => {
+        sortByLikesAndSet(blogs.filter(b => b.id !== blog.id))
+        flashNotification('Blog removed successfully', 'Info')
+      })
+      .catch((error) => {
+        console.log('Got error', error)
+        flashNotification('Blog could not be removed', 'Error')
+      })
+    }
   }
 
   const addLike = (blogObject, id) => {
@@ -129,7 +146,15 @@ const App = () => {
         </Togglable>
       </div>
       <div>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} addLike={addLike} /> )}
+        {blogs.map(blog => {
+          return <Blog
+            key={blog.id}
+            blog={blog}
+            addLike={addLike}
+            removeBlog={removeBlog}
+            currentUser={user}
+          />
+        } )}
       </div>
     </div>
   )

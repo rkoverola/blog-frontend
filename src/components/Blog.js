@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-const Blog = ({blog, addLike}) => {
-  
+const Blog = ({blog, addLike, removeBlog, currentUser}) => {
+
   const [minimized, setMinimized] = useState(true)
 
   const blogStyle = {
@@ -22,7 +22,7 @@ const Blog = ({blog, addLike}) => {
 
   const toggleMinimized = () => { setMinimized(!minimized) }
 
-  const handleClick = () => {
+  const handleLikeClick = () => {
     const blogObject = {
       user: blog.user.id,
       likes: blog.likes + 1,
@@ -31,6 +31,18 @@ const Blog = ({blog, addLike}) => {
       url: blog.url
     }
     addLike(blogObject, blog.id)
+  }
+
+  const handleRemoveClick = () => {
+    removeBlog(blog)
+  }
+
+  const addRemoveButton = () => {
+    if(blog.user.username === currentUser.username) {
+      return (
+        <button onClick={handleRemoveClick} >Remove</button>
+      )
+    }
   }
 
   return (
@@ -43,9 +55,10 @@ const Blog = ({blog, addLike}) => {
       <div>{blog.url}</div>
       <div>
         Likes: {blog.likes}
-        <button onClick={handleClick} >Like</button>
+        <button onClick={handleLikeClick} >Like</button>
       </div>
       <div>{blog.user.name}</div>
+      <div>{addRemoveButton()}</div>
     </div>
   </div>  
 )}
