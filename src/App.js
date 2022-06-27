@@ -20,7 +20,7 @@ const App = () => {
   useEffect( () => {
     async function getData() {
       const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      sortByLikesAndSet(blogs)
     }
     getData()
   }, [])
@@ -66,7 +66,7 @@ const App = () => {
   const addBlog = (blogObject) => {
     blogService.create(blogObject)
     .then((addedBlog) => {
-      setBlogs(blogs.concat(addedBlog))
+      sortByLikesAndSet(blogs.concat(addedBlog))
       blogCreationFormRef.current.toggleVisibility()
       flashNotification('Blog creation successful', 'Info')
     })
@@ -83,12 +83,17 @@ const App = () => {
       const blogsCopy = blogs.slice()
       const replaceIndex = blogsCopy.findIndex(b => b.id === id)
       const modifiedBlogs = blogsCopy.fill(updatedBlog, replaceIndex, replaceIndex + 1)
-      setBlogs(modifiedBlogs)
+      sortByLikesAndSet(modifiedBlogs)
     })
     .catch((error) => {
       console.log('Got error', error)
       flashNotification('Like operation failed', 'Error')
     })
+  }
+
+  const sortByLikesAndSet = (blogs) => {
+    const sorted = blogs.sort((a, b) => b.likes - a.likes)
+    setBlogs(sorted)
   }
 
   const handleUsernameChange = ({ target }) => { setUsername(target.value) }
