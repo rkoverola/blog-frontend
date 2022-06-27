@@ -1,49 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Togglable from './components/Togglable'
+import BlogCreationForm from './components/BlogCreationForm'
+import LoginForm from './components/LoginForm'
+import NotificationBar from './components/NotificationBar'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
-
-const BlogCreationForm = ({handleBlogSubmit, handleTitleChange, handleAuthorChange, handleUrlChange, title, author, url}) => {
-  return (
-    <form onSubmit={handleBlogSubmit} >
-      <div>
-        Title <input type={'text'} value={title} onChange={handleTitleChange} />
-      </div>
-      <div>
-        Author <input type={'text'} value={author} onChange={handleAuthorChange} />
-      </div>
-      <div>
-        URL <input type={'text'} value={url} onChange={handleUrlChange} />
-      </div>
-      <div>
-        <button type='submit'>Create</button>
-      </div>
-    </form>
-  )
-}
-
-const LoginForm = ({handleLoginSubmit, handleUsernameChange, handlePasswordChange, username, password}) => {
-  return (
-    <form onSubmit={handleLoginSubmit} >
-      <div>
-        Username <input type={'text'} value={username} onChange={handleUsernameChange} />
-      </div>
-      <div>
-        Password <input type={'password'} value={password} onChange={handlePasswordChange} />
-      </div>
-      <div>
-        <button type='submit'>Login</button>
-      </div>
-    </form>
-  )
-}
-
-const NotificationBar = ({ message, type }) => {
-  return (
-    <h3 className={type}>{message}</h3>
-  )
-}
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
