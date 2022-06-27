@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
@@ -55,6 +55,7 @@ const App = () => {
   const [url, setUrl] = useState('')
   const [notification, setNotification] = useState('')
   const [notificationType, setNotificationType] = useState('')
+  const blogCreationFormRef = useRef()
 
   useEffect( () => {
     async function getData() {
@@ -116,6 +117,7 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      blogCreationFormRef.current.toggleVisibility()
       flashNotification('Blog creation successful', 'Info')
     } catch(error) {
       console.log('Got error', error)
@@ -154,7 +156,7 @@ const App = () => {
       </div>
       <h2>Create new</h2>
       <div>
-        <Togglable buttonText={'Create new'} >
+        <Togglable buttonText={'Create new'} ref={blogCreationFormRef} >
           <BlogCreationForm 
             handleBlogSubmit={handleBlogSubmit}
             handleTitleChange={handleTitleChange}
