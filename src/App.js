@@ -65,47 +65,47 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     blogService.create(blogObject)
-    .then((addedBlog) => {
-      console.log('Adding', addedBlog)
-      console.log('To', blogs)
-      sortByLikesAndSet(blogs.concat(addedBlog))
-      blogCreationFormRef.current.toggleVisibility()
-      flashNotification('Blog creation successful', 'Info')
-    })
-    .catch((error) => {  
-      console.log('Got error', error)
-      flashNotification('Blog creation failed', 'Error')
-    })
+      .then((addedBlog) => {
+        console.log('Adding', addedBlog)
+        console.log('To', blogs)
+        sortByLikesAndSet(blogs.concat(addedBlog))
+        blogCreationFormRef.current.toggleVisibility()
+        flashNotification('Blog creation successful', 'Info')
+      })
+      .catch((error) => {
+        console.log('Got error', error)
+        flashNotification('Blog creation failed', 'Error')
+      })
   }
 
   const removeBlog = (blog) => {
     const confirm = window.confirm(`Remove blog "${blog.title}"?`)
     if(confirm) {
       blogService.remove(blog.id)
-      .then(() => {
-        sortByLikesAndSet(blogs.filter(b => b.id !== blog.id))
-        flashNotification('Blog removed successfully', 'Info')
-      })
-      .catch((error) => {
-        console.log('Got error', error)
-        flashNotification('Blog could not be removed', 'Error')
-      })
+        .then(() => {
+          sortByLikesAndSet(blogs.filter(b => b.id !== blog.id))
+          flashNotification('Blog removed successfully', 'Info')
+        })
+        .catch((error) => {
+          console.log('Got error', error)
+          flashNotification('Blog could not be removed', 'Error')
+        })
     }
   }
 
   const addLike = (blogObject, id) => {
     console.log('Adding like to', blogObject)
     blogService.update(blogObject, id)
-    .then(updatedBlog => {
-      const blogsCopy = blogs.slice()
-      const replaceIndex = blogsCopy.findIndex(b => b.id === id)
-      const modifiedBlogs = blogsCopy.fill(updatedBlog, replaceIndex, replaceIndex + 1)
-      sortByLikesAndSet(modifiedBlogs)
-    })
-    .catch((error) => {
-      console.log('Got error', error)
-      flashNotification('Like operation failed', 'Error')
-    })
+      .then(updatedBlog => {
+        const blogsCopy = blogs.slice()
+        const replaceIndex = blogsCopy.findIndex(b => b.id === id)
+        const modifiedBlogs = blogsCopy.fill(updatedBlog, replaceIndex, replaceIndex + 1)
+        sortByLikesAndSet(modifiedBlogs)
+      })
+      .catch((error) => {
+        console.log('Got error', error)
+        flashNotification('Like operation failed', 'Error')
+      })
   }
 
   const sortByLikesAndSet = (blogs) => {

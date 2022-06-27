@@ -15,8 +15,8 @@ const getAll = async () => {
 
 const create = async (blog) => {
   console.log('Sending with token', token)
-  const config = { 
-    headers: { Authorization: `bearer ${token}` } 
+  const config = {
+    headers: { Authorization: `bearer ${token}` }
   }
   const response = await axios.post(baseUrl, blog, config)
   return response.data
@@ -31,8 +31,8 @@ const update = async (blog, id) => {
 }
 
 const remove = async (id) => {
-  const config = { 
-    headers: { Authorization: `bearer ${token}` } 
+  const config = {
+    headers: { Authorization: `bearer ${token}` }
   }
   const url = `${baseUrl}/${id}`
   const response = await axios.delete(url, config)

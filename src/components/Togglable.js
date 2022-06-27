@@ -4,7 +4,7 @@ const Togglable = forwardRef((props, ref) => {
 
   const [isVisible, setVisible] = useState(false)
 
-  const buttonText = isVisible 
+  const buttonText = isVisible
     ? props.buttonText
     : 'Cancel'
 
@@ -27,5 +27,7 @@ const Togglable = forwardRef((props, ref) => {
     </div>
   )
 })
+
+Togglable.displayName = 'Togglable'
 
 export default Togglable

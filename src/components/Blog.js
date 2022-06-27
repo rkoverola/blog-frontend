@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({blog, addLike, removeBlog, currentUser}) => {
+const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
 
   const [minimized, setMinimized] = useState(true)
 
@@ -16,7 +16,7 @@ const Blog = ({blog, addLike, removeBlog, currentUser}) => {
   const additionalInfoStyle = minimized
     ? { display: 'none' }
     : { display: '' }
-  
+
   const buttonText = minimized
     ? 'View'
     : 'Hide'
@@ -47,22 +47,22 @@ const Blog = ({blog, addLike, removeBlog, currentUser}) => {
   }
 
   return (
-  <div style={blogStyle} >
-    <div>
-      {blog.title} {blog.author}
-      <button onClick={toggleMinimized} >{buttonText}</button>
-    </div>
-    <div style={additionalInfoStyle} >
-      <div>{blog.url}</div>
+    <div style={blogStyle} >
       <div>
-        Likes: {blog.likes}
-        <button onClick={handleLikeClick} >Like</button>
+        {blog.title} {blog.author}
+        <button onClick={toggleMinimized} >{buttonText}</button>
       </div>
-      <div>{blog.user.name}</div>
-      <div>{addRemoveButton()}</div>
+      <div style={additionalInfoStyle} >
+        <div>{blog.url}</div>
+        <div>
+        Likes: {blog.likes}
+          <button onClick={handleLikeClick} >Like</button>
+        </div>
+        <div>{blog.user.name}</div>
+        <div>{addRemoveButton()}</div>
+      </div>
     </div>
-  </div>  
-)}
+  )}
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
