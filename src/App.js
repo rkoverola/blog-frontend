@@ -13,9 +13,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [notification, setNotification] = useState('')
   const [notificationType, setNotificationType] = useState('')
   const blogCreationFormRef = useRef()
@@ -66,33 +63,21 @@ const App = () => {
     }
   }
 
-  const handleBlogSubmit = async (event) => {
-    event.preventDefault()
-    try {
-      console.log('Submitting', title, author, url)
-      const blogObject = {
-        title: title,
-        author: author,
-        url: url
-      }
-      const addedBlog = await blogService.create(blogObject)
+  const addBlog = (blogObject) => {
+    blogService.create(blogObject)
+    .then((addedBlog) => {
       setBlogs(blogs.concat(addedBlog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
       blogCreationFormRef.current.toggleVisibility()
       flashNotification('Blog creation successful', 'Info')
-    } catch(error) {
+    })
+    .catch((error) => {  
       console.log('Got error', error)
       flashNotification('Blog creation failed', 'Error')
-    }
+    })
   }
 
   const handleUsernameChange = ({ target }) => { setUsername(target.value) }
   const handlePasswordChange = ({ target }) => { setPassword(target.value) }
-  const handleTitleChange = ({ target }) => { setTitle(target.value) }
-  const handleAuthorChange = ({ target }) => { setAuthor(target.value) }
-  const handleUrlChange = ({ target }) => { setUrl(target.value) }
 
   if(user === null) {
     return (
@@ -120,15 +105,7 @@ const App = () => {
       <h2>Create new</h2>
       <div>
         <Togglable buttonText={'Create new'} ref={blogCreationFormRef} >
-          <BlogCreationForm 
-            handleBlogSubmit={handleBlogSubmit}
-            handleTitleChange={handleTitleChange}
-            handleAuthorChange={handleAuthorChange}
-            handleUrlChange={handleUrlChange}
-            title={title}
-            author={author}
-            url={url}
-          />
+          <BlogCreationForm addBlog={addBlog} />
         </Togglable>
       </div>
       <div>
