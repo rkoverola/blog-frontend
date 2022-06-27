@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, addLike}) => {
   
   const [minimized, setMinimized] = useState(true)
 
@@ -22,6 +22,17 @@ const Blog = ({blog}) => {
 
   const toggleMinimized = () => { setMinimized(!minimized) }
 
+  const handleClick = () => {
+    const blogObject = {
+      user: blog.user.id,
+      likes: blog.likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url
+    }
+    addLike(blogObject, blog.id)
+  }
+
   return (
   <div style={blogStyle} >
     <div>
@@ -32,7 +43,7 @@ const Blog = ({blog}) => {
       <div>{blog.url}</div>
       <div>
         Likes: {blog.likes}
-        <button>Like</button>
+        <button onClick={handleClick} >Like</button>
       </div>
       <div>{blog.user.name}</div>
     </div>

@@ -76,6 +76,21 @@ const App = () => {
     })
   }
 
+  const addLike = (blogObject, id) => {
+    console.log('Adding like to', blogObject)
+    blogService.update(blogObject, id)
+    .then(updatedBlog => {
+      const blogsCopy = blogs.slice()
+      const replaceIndex = blogsCopy.findIndex(b => b.id === id)
+      const modifiedBlogs = blogsCopy.fill(updatedBlog, replaceIndex, replaceIndex + 1)
+      setBlogs(modifiedBlogs)
+    })
+    .catch((error) => {
+      console.log('Got error', error)
+      flashNotification('Like operation failed', 'Error')
+    })
+  }
+
   const handleUsernameChange = ({ target }) => { setUsername(target.value) }
   const handlePasswordChange = ({ target }) => { setPassword(target.value) }
 
@@ -109,7 +124,7 @@ const App = () => {
         </Togglable>
       </div>
       <div>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} /> )}
+        {blogs.map(blog => <Blog key={blog.id} blog={blog} addLike={addLike} /> )}
       </div>
     </div>
   )

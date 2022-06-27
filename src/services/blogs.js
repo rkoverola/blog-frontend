@@ -22,5 +22,12 @@ const create = async (blog) => {
   return response.data
 }
 
-const blogService = { getAll, create, setToken }
+// FIXME: No authorization yet
+const update = async (blog, id) => {
+  const url = `${baseUrl}/${id}`
+  const response = await axios.put(url, blog)
+  return response.data
+}
+
+const blogService = { getAll, create, update, setToken }
 export default blogService
