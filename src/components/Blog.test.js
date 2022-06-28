@@ -1,16 +1,18 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 describe('<Blog />', () => {
 
   let blogContainer
+  let addLike
+  let removeBlog
 
   beforeEach(() => {
-    const addLike = jest.fn()
-    const removeBlog = jest.fn()
+    addLike = jest.fn()
+    removeBlog = jest.fn()
     const currentUser = {
       name: 'Juho Test',
       id: 'user_id',
@@ -51,5 +53,13 @@ describe('<Blog />', () => {
     expect(div).toHaveTextContent('www.test.com', { exact: false })
     expect(div).toHaveTextContent('9', { exact: false })
     expect(div).not.toHaveStyle('display: none')
+  })
+
+  test('Event handler receives appropriate amount of likes when like button clicked', async () => {
+    const button = blogContainer.querySelector('.likeButton')
+    const user = userEvent.setup()
+    await user.click(button)
+    await user.click(button)
+    expect(addLike.mock.calls).toHaveLength(2)
   })
 })

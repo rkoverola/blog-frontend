@@ -27,16 +27,16 @@ const BlogCreationForm = ({ addBlog }) => {
   return (
     <form onSubmit={handleBlogSubmit} >
       <div>
-        Title <input type={'text'} value={title} onChange={handleTitleChange} />
+        Title <input type={'text'} value={title} onChange={handleTitleChange} className={'titleInput'} />
       </div>
       <div>
-        Author <input type={'text'} value={author} onChange={handleAuthorChange} />
+        Author <input type={'text'} value={author} onChange={handleAuthorChange} className={'authorInput'} />
       </div>
       <div>
-        URL <input type={'text'} value={url} onChange={handleUrlChange} />
+        URL <input type={'text'} value={url} onChange={handleUrlChange} className={'urlInput'} />
       </div>
       <div>
-        <button type='submit'>Create</button>
+        <button type='submit' className='submitButton' >Create</button>
       </div>
     </form>
   )
