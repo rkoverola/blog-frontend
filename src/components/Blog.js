@@ -48,11 +48,16 @@ const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
 
   return (
     <div style={blogStyle} >
-      <div>
+      <div className='blogInfo'>
         {blog.title} {blog.author}
-        <button onClick={toggleMinimized} >{buttonText}</button>
+        <button
+          onClick={toggleMinimized}
+          className='toggleMinimizedButton'
+        >
+          {buttonText}
+        </button>
       </div>
-      <div style={additionalInfoStyle} >
+      <div className='additionalBlogInfo' style={additionalInfoStyle} >
         <div>{blog.url}</div>
         <div>
         Likes: {blog.likes}
