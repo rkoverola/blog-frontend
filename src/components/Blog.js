@@ -47,7 +47,7 @@ const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
   }
 
   return (
-    <div style={blogStyle} >
+    <tr style={blogStyle} >
       <div className='blogInfo'>
         {blog.title} {blog.author}
         <button
@@ -71,7 +71,7 @@ const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
         <div>{blog.user.name}</div>
         <div>{addRemoveButton()}</div>
       </div>
-    </div>
+    </tr>
   )}
 
 Blog.propTypes = {

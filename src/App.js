@@ -146,7 +146,7 @@ const App = () => {
           <BlogCreationForm addBlog={addBlog} />
         </Togglable>
       </div>
-      <div>
+      <table>
         {blogs.map(blog => {
           return <Blog
             key={blog.id}
@@ -156,7 +156,7 @@ const App = () => {
             currentUser={user}
           />
         } )}
-      </div>
+      </table>
     </div>
   )
 }

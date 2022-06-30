@@ -83,6 +83,23 @@ describe('Blog app', function() {
         cy.contains('Blog removed successfully')
         cy.get('html').should('not.contain', 'first blog')
       })
+      it.only('they should be ordered by amount of likes', function() {
+        cy.get('table>tr').eq(0).as('firstElement')
+        cy.get('@firstElement').contains('Likes: 3')
+        cy.get('@firstElement').contains('third blog')
+
+        cy.contains('second blog').find('.toggleMinimizedButton').click()
+        cy.contains('second blog').parent().find('.additionalBlogInfo').find('.likeButton').click()
+        cy.contains('second blog').parent().find('.additionalBlogInfo').find('.likeButton').click()
+
+        cy.get('table>tr').eq(0).as('newFirstElement')
+        cy.get('@newFirstElement').contains('Likes: 4')
+        cy.get('@newFirstElement').contains('second blog')
+
+        cy.get('table>tr').eq(1).as('newSecondElement')
+        cy.get('@newSecondElement').contains('Likes: 3')
+        cy.get('@newSecondElement').contains('third blog')
+      })
     })
   })
 })
