@@ -8,6 +8,7 @@ import NotificationBar from './components/NotificationBar'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -28,9 +29,9 @@ const App = () => {
   useEffect(() => {
     const existingLoggedUserJson = window.localStorage.getItem('loggedUser')
     if(existingLoggedUserJson) {
-      const user = JSON.parse(existingLoggedUserJson)
-      setUser(user)
-      blogService.setToken(user.token)
+      const parsedUser = JSON.parse(existingLoggedUserJson)
+      setUser(parsedUser)
+      blogService.setToken(parsedUser.token)
     }
   }, [])
 
